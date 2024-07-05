@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="icon" type="image/x-icon" href="icons\favicon.ico">
+    <title> Gangster City Notepad </title>
+</head>
+
+<body>
+    <h1> Gangster City <s> Solver</s> <sub>Notepad</sub> </h1>
+    <main>
+
+        <div id="container">
+
+            <div id="input">
+                <h3> Input: </h3>
+                <form>
+                    <table id="inputTable">
+                        <tr>
+                            <td>Round</td>
+                            <td><input type="number" id="round" value="1"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="suspect">Choose a suspect:</label>
+                            </td>
+                            <td>
+                                <select id="suspect" name="suspect">
+                                    <option></option>
+                                    <option value="man"> Man </option>
+                                    <option value="woman"> Woman </option>
+                                    <option value="scientist"> Scientist </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="weapon">Choose a weapon:</label>
+
+                            </td>
+                            <td>
+                                <select id="weapon" name="weapon">
+                                    <option></option>
+                                    <option value="syringe"> Syringe </option>
+                                    <option value="gun"> Gun </option>
+                                    <option value="knife"> Knife </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="location">Choose a location:</label>
+
+                            </td>
+                            <td>
+                                <select id="location" name="location">
+                                    <option></option>
+                                    <option value="yellow"> Yellow </option>
+                                    <option value="blue"> Blue </option>
+                                    <option value="red"> Red </option>
+                                </select>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="motive">Choose a motive:</label>
+
+                            </td>
+                            <td>
+                                <select id="motive" name="motive">
+                                    <option></option>
+                                    <option value="love"> Love </option>
+                                    <option value="money"> Money </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Compatibility: </td>
+                            <td><input type="number" id="compatibility"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <button type="button" onclick="getValues()" > Confirm </button>
+                            </td>
+                        </tr>
+                    </table>
+
+                </form>
+            </div>
+
+            <div id="output">
+                <h3> Output: </h3>
+                <table id="outputTable">
+                    <thead>
+                        <tr>
+                            <th>Round</th>
+                            <th>Suspect</th>
+                            <th>Weapon</th>
+                            <th>Location</th>
+                            <th>Motive</th>
+                            <th>Compatibility</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <script>
+                function newRound() {
+                    // --------------------- //
+                    // ZWIĘKSZANIE RUNDY O 1 //
+                    // --------------------- //
+
+                    // Pobierz element input o id 'round'
+                    let roundElement = document.getElementById('round');
+                    // Pobierz bieżącą wartość i przekonwertuj ją na liczbę
+                    let currentRoundValue = parseInt(roundElement.value);
+                    // Zwiększ wartość o 1
+                    let newRoundValue = currentRoundValue + 1;
+                    // Ustaw nową wartość w polu input
+                    roundElement.value = newRoundValue;
+
+                    // --------------- //
+                    // RESETOWANIE PÓL //
+                    // --------------- //
+
+                    let suspectElement = document.getElementById('suspect');
+                    suspectElement.value = "";
+
+                    let weaponElement = document.getElementById('weapon');
+                    weaponElement.value = ""
+
+                    let locationElement = document.getElementById('location');
+                    locationElement.value = ""
+
+                    let motiveElement = document.getElementById('motive');
+                    motiveElement.value = ""
+
+                    let compatibilityElement = document.getElementById('compatibility');
+                    compatibilityElement.value = ""
+                    
+                }
+
+                function getValues() {
+                    // ----------------------- //
+                    // POBIERANIE DANYCH Z PÓL //
+                    // ----------------------- //
+
+                    let roundElement = document.getElementById('round');
+                    let roundValue = roundElement.value
+
+                    let suspectElement = document.getElementById('suspect');
+                    let suspectValue = suspectElement.value
+
+                    let weaponElement = document.getElementById('weapon');
+                    let weaponValue = weaponElement.value;
+
+                    let locationElement = document.getElementById('location');
+                    let locationValue = locationElement.value;
+
+                    let motiveElement = document.getElementById('motive');
+                    let motiveValue = motiveElement.value;
+
+                    let compatibilityElement = document.getElementById('compatibility');
+                    let compatibilityValue = compatibilityElement.value;
+
+                    // --------- //
+                    // WALIDACJA //
+                    // --------- //
+
+                    if (roundValue === "" || suspectValue === "" || weaponValue === "" || locationValue === "" || motiveValue === "" || compatibilityValue === "") {
+                        alert("Please fill in all fields.");
+                    } else if (compatibilityValue < 1 || compatibilityValue > 3) {
+                        alert("Compatibility value must be in the range from 1 to 3.");
+                    } else if ( roundValue <= 0) {
+                        alert("Round value must be higher than 0.");
+                    } else {
+                        // Wywołanie następnej funkcji
+                        addCard(roundValue, suspectValue, weaponValue, locationValue, motiveValue, compatibilityValue);
+                    }
+                }
+
+                function addCard(round, suspect, weapon, location, motive, compatibility) {
+                    // ------------- //
+                    // DODANIE KARTY //
+                    // ------------- //
+
+                    // Pobierz element tbody tabeli wyników
+                    let resultBody = document.getElementById('resultBody');
+
+                    // Utwórz nowy wiersz
+                    let newRow = document.createElement('tr');
+
+                    // Utwórz komórki i dodaj wartości
+                    newRow.innerHTML = `
+                        <td>${round}</td>
+                        <td><img src="icons/${suspect}.png" alt="${suspect}"></td>
+                        <td><img src="icons/${weapon}.png" alt="${weapon}"></td>
+                        <td><img src="icons/${location}.png" alt="${location}"></td>
+                        <td><img src="icons/${motive}.png" alt="${motive}"></td>
+                        <td><img src="icons/${compatibility}.png" alt="${compatibility}"></td>
+                    `;
+
+                    // Dodaj nowy wiersz do tbody
+                    resultBody.appendChild(newRow);
+
+                    // Upewnij się, że tabela jest widoczna
+                    document.getElementById('outputTable').style.display = 'table';
+
+                    newRound();
+                }
+
+            </script>
+        </div>
+
+
+    </main>
+
+
+</body>
+
+</html>
